@@ -44,7 +44,7 @@ async def chat(request: ChatRequest):
 
     try:
         # Initialize AgentState and set user query
-        state = AgentState(user_query=user_input)
+        state = AgentState(user_query=user_input, user_id=user_id)
 
         # Execute agent and get the bot response
         result_state = agent_executor.invoke(state)
