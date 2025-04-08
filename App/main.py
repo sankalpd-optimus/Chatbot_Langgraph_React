@@ -5,6 +5,7 @@ from graph import agent_executor, AgentState
 from azure.cosmos import CosmosClient, PartitionKey
 from dotenv import load_dotenv
 import os
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
@@ -23,10 +24,35 @@ chat_history_container = database.create_container_if_not_exists(
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # React server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Request model for chat endpoint
 class ChatRequest(BaseModel):
     user_id: str
     user_input: str
+
+@app.get("/chat/history/{user_id}")
+def fetch_chat_history(user_id: str):
+    try:
+        history_pairs = get_chat_history(user_id)
+        if not history_pairs:
+            return {"history": []}
+        
+        formatted_history = []
+        for user_input, bot_response in reversed(history_pairs): 
+            formatted_history.append({"sender": "user", "text": user_input})
+            formatted_history.append({"sender": "bot", "text": bot_response})
+        
+        return {"history": formatted_history}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving history: {str(e)}")
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
