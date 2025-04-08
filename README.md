@@ -6,3 +6,5 @@ The langgraph chatbot contains these features:
 1. Toggle between light/dark mode
 2. Shows chat history
 3. Clear present conversation
+
+Since, there's keyword based routing in this so to trigger doc search use keywords like "document" or "knowledge" in your prompts.
