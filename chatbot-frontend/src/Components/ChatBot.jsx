@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Chatbot.css'; 
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';       // Dark theme
+import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';         // Light theme
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
@@ -88,19 +94,46 @@ const Chatbot = () => {
         </div>
       </header>
 
-      <div className="chat-box">
-        {messages.map((msg, i) => (
-          <div key={i} className={`message ${msg.sender}`}>
-            <img
-              src={msg.sender === 'user' ? '/user.png' : '/bot.png'}
-              alt={msg.sender}
-              className="avatar"
-            />
-            <p>{msg.text}</p>
-          </div>
-        ))}
-        {loading && <div className="message bot"><p>Typing...</p></div>}
-      </div>
+<div className="chat-box">
+  {messages.map((msg, i) => (
+    <div key={i} className={`message ${msg.sender}`}>
+      <img
+        src={msg.sender === 'user' ? '/user.png' : '/bot.png'}
+        alt={msg.sender}
+        className="avatar"
+      />
+      <div className="markdown">
+      <ReactMarkdown
+  children={msg.text}
+  components={{
+    a: ({ node, ...props }) => (
+      <a {...props} target="_blank" rel="noopener noreferrer" />
+    ),
+    code({ node, inline, className, children, ...props }) {
+      const match = /language-(\w+)/.exec(className || '');
+      return !inline && match ? (
+        <SyntaxHighlighter
+          style={darkMode ? oneDark : prism}
+          language={match[1]}
+          PreTag="div"
+          {...props}
+        >
+          {String(children).replace(/\n$/, '')}
+        </SyntaxHighlighter>
+      ) : (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
+    },
+  }}
+/>
+ </div>
+    </div>
+  ))}
+  {loading && <div className="message bot"><p>Typing...</p></div>}
+</div>
+
 
       <div className="input-area">
         <input
