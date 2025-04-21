@@ -1,12 +1,10 @@
 To run this, open terminal in your IDE  
 step 1: uvicorn app.main:app --reload ( default host:_ http://localhost:8000 )
-step 2: streamlit run bot.py
+step 2: nmp run dev 
 
-You can trigger a specific agent using:
-
-@doc for document-based queries (Upload a document to use this)
-@web for web search
-@sql for structured data queries
-
+the chatbot has several features:
+1. toggle between light/dark mode
+2. clear conversation
+3. view chat history
 
 
