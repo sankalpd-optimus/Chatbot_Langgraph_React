@@ -7,4 +7,5 @@ the chatbot has several features:
 2. clear conversation
 3. view chat history
 
-
+It has 2 agents Doc_search agent and Web_search agent (Bing)
+To trigger doc_search use keyword based routing such as "document" and "knowledge".
