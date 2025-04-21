@@ -1,10 +1,12 @@
-To run this, open terminal in your IDE
+To run this, open terminal in your IDE  
 step 1: uvicorn app.main:app --reload ( default host:_ http://localhost:8000 )
-step 2: npm run dev ( default port:- 5173 )
+step 2: streamlit run bot.py
 
-The langgraph chatbot contains these features:
-1. Toggle between light/dark mode
-2. Shows chat history
-3. Clear present conversation
+You can trigger a specific agent using:
 
-Since, there's keyword based routing in this so to trigger doc search use keywords like "document" or "knowledge" in your prompts.
+@doc for document-based queries (Upload a document to use this)
+@web for web search
+@sql for structured data queries
+
+
+
